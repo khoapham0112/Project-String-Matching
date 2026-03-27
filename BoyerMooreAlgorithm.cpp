@@ -84,8 +84,12 @@ void search(string txt, string pat,const vector<int>& badchar,const vector<int>&
     }
 }
 
-tuple<vector<vector<tuple<int, int, int, int>>>, double, double> BoyerMooreAlgorithm(std::vector<std::string> matrix, vector<string> pat, int mRow, int mCol, int n)
+tuple<vector<vector<tuple<int, int, int, int>>>, double, double> BoyerMooreAlgorithm(std::vector<std::string> matrix, vector<string> pat)
 {
+    int mRow = matrix.size();
+    int mCol = matrix.size();
+    int n = pat.size();
+    
     vector<string> transposed(mCol, string(mRow, ' '));
     for (int i = 0; i < mRow; i++) {
         for (int j = 0; j < mCol; j++) {
