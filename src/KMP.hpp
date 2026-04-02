@@ -122,7 +122,7 @@ searchGridKMP(const vector<string>& grid, const vector<string>& keywords) {
     }
 
     auto end_time = high_resolution_clock::now();
-    double execution_time_ms = duration_cast<nanoseconds>(end_time - start_time).count() * 1e-6;
+    double execution_time_ms = duration_cast<nanoseconds>(end_time - start_time).count() / 1000000.0;
 
     return {all_results, total_comparisons, execution_time_ms};
 }
