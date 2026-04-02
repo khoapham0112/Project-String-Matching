@@ -13,7 +13,9 @@ rabinKarp(const vector<string>& grid, const vector<string>& keywords) {
     int C = grid[0].size();
 
     vector<vector<tuple<int, int, int, int>>> results(keywords.size());
-    long long comparisons = 0; 
+    double comparisons = 0; 
+    double total_compare = 0;
+    bool found = false;
     
     const int BASE = 256;
     const int PRIME = 101;
@@ -38,7 +40,9 @@ rabinKarp(const vector<string>& grid, const vector<string>& keywords) {
     for (size_t k = 0; k < keywords.size(); ++k) {
         int M = keywords[k].length();
         if (M == 0 || M > max(R, C)) continue; 
-
+        comparisons = 0;
+        found = false;
+        
         auto searchRay = [&](int sr, int sc, int dr, int dc) {
             int L = 0, r = sr, c = sc;
             while (r >= 0 && r < R && c >= 0 && c < C) { L++; r += dr; c += dc; }
@@ -63,7 +67,11 @@ rabinKarp(const vector<string>& grid, const vector<string>& keywords) {
                         if (grid[check_r][check_c] != keywords[k][j]) { match = false; break; }
                         check_r += dr; check_c += dc;
                     }
-                    if (match) results[k].push_back({csr, csc, cer, cec});
+                    if (match) 
+                    {
+                        found = true;
+                        results[k].push_back({csr, csc, cer, cec});
+                    }
                 }
 
                 if (i < L - M) {
@@ -78,10 +86,14 @@ rabinKarp(const vector<string>& grid, const vector<string>& keywords) {
 
         for (int r = 0; r < R; r++) searchRay(r, 0, 0, 1); 
         for (int c = 0; c < C; c++) searchRay(0, c, 1, 0); 
+        if(found)
+        {
+            total_compare += comparisons;
+        }
     }
 
     auto endTime = chrono::high_resolution_clock::now();
-    double totalTime = chrono::duration<double, std::milli>(endTime - startTime).count();
+    double totalTime = chrono::duration<double, std::nanoseconds>(endTime - startTime).count() / 1000000.0;
 
-    return {results, totalTime, comparisons};
+    return {results, totalTime, total_compare};
 }
