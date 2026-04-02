@@ -99,11 +99,12 @@ tuple<vector<vector<tuple<int, int, int, int>>>, double, double> BoyerMooreAlgor
 
     auto start = chrono::high_resolution_clock::now();
     double comparisons = 0;
+    double total_compare = 0;
     tuple<vector<vector<tuple<int, int, int, int>>>, double, double> res;
     
     for (int i = 0; i < n; i++)
     {
-       
+        comparisons = 0;
         vector<int> badchar(NO_OF_CHARS);
         int m = pat[i].size();
         badCharHeuristic(pat[i], m, badchar);
@@ -129,6 +130,7 @@ tuple<vector<vector<tuple<int, int, int, int>>>, double, double> BoyerMooreAlgor
 
         if (rowPositions.size() + colPositions.size() != 0)
         {
+            total_compare += comparisons;
             for (pair<int, int> pos : rowPositions)
             {
                 temp.push_back({ pos.first, pos.second, pos.first, pos.second + m - 1 });
@@ -146,6 +148,6 @@ tuple<vector<vector<tuple<int, int, int, int>>>, double, double> BoyerMooreAlgor
     auto duration = chrono::duration_cast<chrono::nanoseconds>(end - start);
     double ms = duration.count() / 1000000.0;
     get<1>(res) = ms;
-    get<2>(res) = comparisons;
+    get<2>(res) = total_compare;
     return res;
 }
