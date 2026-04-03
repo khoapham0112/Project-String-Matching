@@ -16,7 +16,7 @@ bruteForce(const vector<string>& grid, const vector<string>& keywords) {
     int R = grid.size();
     int C = grid[0].size();
 
-    double comparisons = 0;
+    double comp = 0;
     vector<vector<tuple<int, int, int, int>>> all_occurrences;
 
     auto start = chrono::high_resolution_clock::now();
@@ -24,7 +24,7 @@ bruteForce(const vector<string>& grid, const vector<string>& keywords) {
     for (const string& word : keywords) {
         vector<tuple<int, int, int, int>> word_matches;
         int len = word.length();
-
+        double comparisons = 0;
         for (int r = 0; r < R; ++r) {
             for (int c = 0; c < C; ++c) {
                 for (int d = 0; d < 4; ++d) {
@@ -47,11 +47,12 @@ bruteForce(const vector<string>& grid, const vector<string>& keywords) {
                 }
             }
         }
+        if (!word_matches.empty()) comp += comparisons;
         all_occurrences.push_back(word_matches);
     }
 
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double, std::milli> duration = end - start;
 
-    return make_tuple(all_occurrences, duration.count(), comparisons);
+    return make_tuple(all_occurrences, duration.count(), comp);
 }
